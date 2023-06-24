@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+		<title>자연어처리 프로젝트_한글 난독화</title>
+        <style>
+            h1, div {
+                text-align: center;
+            }
+            .transformation {
+                color: #fff;
+                background-color:lightcoral;
+                border-color: lightcoral;
+                font-size: 1rem;
+            }
+        </style>
+	</head>
+	<body>
+		<h1>한글 난독화</h1>
+        <div>
+            <textarea id="input_TA" placeholder="난독화할 문장을 입력하세요." rows="7" cols="50"></textarea>
+        </div>
+        <br>
+        <div>
+            <button id="submit" class="transformation" style="min-width: 150px; min-height: 40px;">변환하기</button>
+        </div>
+        <br>
+        <div>
+            <textarea readonly id="output_TA" rows="7" cols="50"></textarea>
+        </div>
+
+        <script>
+            document.getElementById("submit").addEventListener("click", function() {
+                var text = document.getElementById("input_TA").value;
+                fetch("/transform", {
+                    method: "POST",
+                    body: JSON.stringify({inputText: text}),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("output_TA").value = data.outputText;
+                });
+            });
+        </script>
+	</body>
+</html>
